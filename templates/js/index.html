@@ -36,4 +36,29 @@
       }
     });
   }
+
+  const opt1 = document.getElementById("opt-1");
+  opt1.addEventListener("click", () => {
+    console.log("Opt-1 clicked");
+    question.votes_one += 1;
+    const total =
+      question.votes_one +
+      question.votes_two +
+      question.votes_three +
+      question.votes_four;
+    document.getElementById("percent1").innerHTML =
+      (question.votes_one / total) * 100 + "%";
+  });
+  const opt2 = document.getElementById("opt-2");
+  opt2.addEventListener("click", () => {
+    console.log("Opt-2 clicked");
+  });
+  const opt3 = document.getElementById("opt-3");
+  opt3.addEventListener("click", () => {
+    console.log("Opt-3 clicked");
+  });
+  const opt4 = document.getElementById("opt-4");
+  opt4.addEventListener("click", () => {
+    console.log("Opt-4 clicked");
+  });
 </script>

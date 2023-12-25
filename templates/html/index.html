@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <header>Poll UI Design</header>
+      <header>{{question.question_txt}}</header>
       <div class="poll-area">
         <input type="checkbox" name="poll" id="opt-1" />
         <input type="checkbox" name="poll" id="opt-2" />
@@ -18,9 +18,9 @@
           <div class="row">
             <div class="column">
               <span class="circle"></span>
-              <span class="text">HTML</span>
+              <span class="text">{{question.option_one}}</span>
             </div>
-            <span class="percent">30%</span>
+            <span class="percent" id="percent1">30%</span>
           </div>
           <div class="progress" style="--w: 30"></div>
         </label>
@@ -28,9 +28,9 @@
           <div class="row">
             <div class="column">
               <span class="circle"></span>
-              <span class="text">Java</span>
+              <span class="text">{{question.option_two}}</span>
             </div>
-            <span class="percent">20%</span>
+            <span class="percent" id="percent2">20%</span>
           </div>
           <div class="progress" style="--w: 20"></div>
         </label>
@@ -38,9 +38,9 @@
           <div class="row">
             <div class="column">
               <span class="circle"></span>
-              <span class="text">Python</span>
+              <span class="text">{{question.option_three}}</span>
             </div>
-            <span class="percent">40%</span>
+            <span class="percent" id="percent3">40%</span>
           </div>
           <div class="progress" style="--w: 40"></div>
         </label>
@@ -48,15 +48,91 @@
           <div class="row">
             <div class="column">
               <span class="circle"></span>
-              <span class="text">jQuery</span>
+              <span class="text">{{question.option_four}}</span>
             </div>
-            <span class="percent">10%</span>
+            <span class="percent" id="percent4">10%</span>
           </div>
           <div class="progress" style="--w: 10"></div>
         </label>
       </div>
     </div>
 
-    {% include 'js/index.html' %}
+    <script>
+      let votes1 = parseInt("{{ question.votes_one }}");
+      let votes2 = parseInt("{{ question.votes_two }}");
+      let votes3 = parseInt("{{ question.votes_three }}");
+      let votes4 = parseInt("{{ question.votes_four }}");
+
+      const options = document.querySelectorAll("label");
+      for (let i = 0; i < options.length; i++) {
+        options[i].addEventListener("click", () => {
+          for (let j = 0; j < options.length; j++) {
+            if (options[j].classList.contains("selected")) {
+              options[j].classList.remove("selected");
+            }
+          }
+
+          options[i].classList.add("selected");
+          for (let k = 0; k < options.length; k++) {
+            options[k].classList.add("selectall");
+          }
+
+          let forVal = options[i].getAttribute("for");
+          let selectInput = document.querySelector("#" + forVal);
+          let getAtt = selectInput.getAttribute("type");
+          if (getAtt == "checkbox") {
+            selectInput.setAttribute("type", "radio");
+          } else if (selectInput.checked == true) {
+            options[i].classList.remove("selected");
+            selectInput.setAttribute("type", "checkbox");
+          }
+
+          let array = [];
+          for (let l = 0; l < options.length; l++) {
+            if (options[l].classList.contains("selected")) {
+              array.push(l);
+            }
+          }
+          if (array.length == 0) {
+            for (let m = 0; m < options.length; m++) {
+              options[m].removeAttribute("class");
+            }
+          }
+        });
+      }
+
+      const opt1 = document.getElementById("opt-1");
+      opt1.addEventListener("click", () => {
+        // console.log("Opt-1 clicked");
+        votes1 += 1;
+        const total = votes1 + votes2 + votes3 + votes4;
+
+        document.getElementById("percent1").innerHTML =
+          (votes1 / total) * 100 + "%";
+        document.getElementById("percent2").innerHTML =
+          (votes2 / total) * 100 + "%";
+        document.getElementById("percent3").innerHTML =
+          (votes2 / total) * 100 + "%";
+        document.getElementById("percent4").innerHTML =
+          (votes2 / total) * 100 + "%";
+      });
+      const opt2 = document.getElementById("opt-2");
+      opt2.addEventListener("click", () => {
+        // console.log("Opt-2 clicked");
+        votes2 += 1;
+        const total = votes1 + votes2 + votes3 + votes4;
+
+        document.getElementById("percent2").innerHTML =
+          (votes2 / total) * 100 + "%";
+      });
+      const opt3 = document.getElementById("opt-3");
+      opt3.addEventListener("click", () => {
+        console.log("Opt-3 clicked");
+      });
+      const opt4 = document.getElementById("opt-4");
+      opt4.addEventListener("click", () => {
+        console.log("Opt-4 clicked");
+      });
+    </script>
   </body>
 </html>
